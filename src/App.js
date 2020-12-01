@@ -23,11 +23,20 @@ class App extends Component {
 
   }
 
+  deleteNote(index) {
+    let noteArray = this.state.notes
+    noteArray.splice(index, 1)
+    this.setState({ notes: noteArray })
+    console.log("IHUUUUUUUUUUL")
+  }
+
   render() {
     return (
       <section className="Content">
         <DefaultForm createNote={this.createNote.bind(this)} />
-        <NoteList notes={this.state.notes} />
+        <NoteList
+          deleteNote={this.deleteNote.bind(this)}
+          notes={this.state.notes} />
       </section>
     )
   }
