@@ -13,6 +13,7 @@ export default class Card extends Component {
         <header className="CardHeader">
           <h3 className=".CardTitle">{this.props.title}</h3>
           <DeleteSvg onClick={this.indexDeleted.bind(this)} />
+          <h4>{this.props.category}</h4>
         </header>
         <p className="CardText">{this.props.text}</p>
       </section>
