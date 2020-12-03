@@ -7,8 +7,23 @@ export default class DefaultForm extends Component {
     this.title = "";
     this.text = "";
     this.category = "";
+    this.state = { categories: [] };
+    this._newCategories = this._newCategories.bind(this)
+  }
+  componentDidMount() {
+    this.props.categories.subscribe(this._newCategories);
   }
 
+  componentWillUnmount() {
+    this.props.categories.unsubscribe(this._newCategories);
+  }
+  _newCategories(categories) {
+    this.setState({ ...this.state, categories });
+  }
+  _handleCategory(eve) {
+    eve.stopPropagation();
+    this.category = eve.target.value;
+  }
   _handleTitle(eve) {
     eve.stopPropagation();
     this.title = eve.target.value;
@@ -23,10 +38,7 @@ export default class DefaultForm extends Component {
     eve.stopPropagation();
     this.props.addNote(this.title, this.text, this.category);
   }
-  _handleCategory(eve) {
-    eve.stopPropagation();
-    this.category = eve.target.value;
-  }
+ 
 
   render() {
     return (
@@ -37,7 +49,7 @@ export default class DefaultForm extends Component {
         >
           <option defaultChecked={true}>Without category</option>
 
-          {this.props.category.map((category, index) => {
+          {this.state.categories.map((category, index) => {
             return <option key={index}>{category}</option>;
           })}
         </select>

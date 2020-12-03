@@ -1,9 +1,31 @@
 import React, { Component } from "react";
 import "./CategoryList.css";
 class CategoryList extends Component {
+
+  constructor(){
+    super()
+    this.state = {categories:[]}
+    this._newCategories = this._newCategories.bind(this)
+  }
+ 
+
+  componentDidMont() {
+    this.props.categories.subscribe(this._newCategories);
+  }
+
+  componentWillUnmount() {
+    this.props.categories.unsubscribe(this._newCategories);
+  }
+
+  _newCategories(categories) {
+   this.setState({...this.state,categories})
+  }
+
+
   _handleInputEvent(eve) {
     if (eve.key === "Enter") {
-      this.props.addCategory(eve.target.value);
+      let categoryValue = eve.target.value
+      this.props.addCategory(categoryValue);
     }
   }
 
@@ -11,9 +33,9 @@ class CategoryList extends Component {
     return (
       <section className="categoryList">
         <ul className="ulCategoryList">
-          {this.props.category.map((category, index) => {
+          {this.state.categories.map((category, index) => {
             return (
-              <li className="liCategoryList" key={index}>
+              <li key={index}className="liCategoryList" >
                 {category}
               </li>
             );
